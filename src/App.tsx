@@ -144,7 +144,7 @@ export default function App() {
             <div className="flex items-center gap-6 text-[10px] font-mono font-bold tracking-widest uppercase text-[#555]">
               <a href="https://github.com/opaquedb/opaquedb" target="_blank" rel="noreferrer" className="hover:text-[#CCFF00] transition-colors">GitHub</a>
               <a href="https://docs.opaquedb.io" target="_blank" rel="noreferrer" className="hover:text-[#CCFF00] transition-colors">Docs</a>
-              <a href="mailto:info@opaquedb.io" className="hover:text-[#CCFF00] transition-colors">info@opaquedb.io</a>
+              <a href="https://github.com/opaquedb/opaquedb/blob/main/LICENSE" target="_blank" rel="noreferrer" className="hover:text-[#CCFF00] transition-colors">License</a>
             </div>
           </footer>
         </section>
