@@ -18,8 +18,7 @@ npm run build
 ## Deploy
 
 ```bash
-npm run build
-npx wrangler pages deploy dist
+npm run deploy
 ```
 
 ## Links
