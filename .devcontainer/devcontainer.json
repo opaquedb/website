@@ -2,7 +2,6 @@
   "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
   "remoteUser": "root",
   "updateRemoteUserUID": false,
-  "mounts": ["source=/home/user/Vault/Blog,target=/workspaces/hblog-ng/vault,type=bind"],
   "customizations": {
     "vscode": {
       "extensions": [
