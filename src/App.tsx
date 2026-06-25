@@ -73,8 +73,7 @@ export default function App() {
             <section className="h-full w-full snap-start flex flex-col justify-center px-12 bg-[#070707] overflow-hidden">
               <div className="w-full max-w-6xl mx-auto">
                 <div className="mb-6">
-                  <span className="font-mono text-[11px] tracking-[3px] uppercase text-[#CCFF00]">// 01 — Flow</span>
-                  <h2 className="text-4xl font-black tracking-tighter mt-3 mb-1">Your data never leaves encrypted.</h2>
+                  <h2 className="text-4xl font-black tracking-tighter mb-1">Your data never leaves encrypted.</h2>
                   <p className="text-[#888] text-base">See exactly what happens to your query. Start to finish.</p>
                 </div>
                 <HowItWorks />
@@ -91,8 +90,7 @@ export default function App() {
             <section className="h-full w-full snap-start flex flex-col justify-center px-12 overflow-hidden">
               <div className="w-full max-w-6xl mx-auto">
                 <div className="mb-8">
-                  <span className="font-mono text-[11px] tracking-[3px] uppercase text-[#CCFF00]">// 02 — Features</span>
-                  <h2 className="text-4xl font-black tracking-tighter mt-3 mb-1">Built for privacy.</h2>
+                  <h2 className="text-4xl font-black tracking-tighter mb-1">Built for privacy.</h2>
                   <p className="text-[#888] text-base">Key features for privacy and scale.</p>
                 </div>
 
@@ -147,8 +145,7 @@ export default function App() {
             <section className="h-full w-full snap-start flex flex-col items-center justify-start px-6 lg:px-12 bg-[#070707] overflow-hidden pt-2 sm:pt-4">
               <div className="w-full max-w-6xl max-h-full overflow-hidden flex flex-col pb-8 sm:pb-12">
                 <div className="mb-1 sm:mb-2 shrink-0">
-                  <span className="font-mono text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#CCFF00]">// 01 — Flow</span>
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-black tracking-[-1px] mt-1.5 mb-1 leading-tight">Your data never leaves encrypted.</h2>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-black tracking-[-1px] mb-1 leading-tight">Your data never leaves encrypted.</h2>
                   <p className="text-[#aaa] text-xs sm:text-sm max-w-[48ch]">See exactly what happens to your query. Start to finish.</p>
                 </div>
 
@@ -162,8 +159,7 @@ export default function App() {
             <section className="h-full w-full snap-start flex flex-col items-center justify-start px-6 lg:px-12 relative pt-6 sm:pt-8">
               <div className="w-full max-w-5xl">
                 <div className="max-w-md mb-3 sm:mb-4 pt-1">
-                  <span className="font-mono text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#CCFF00]">// 02 — Features</span>
-                  <h2 className="text-[22px] sm:text-2xl md:text-[34px] font-black tracking-tighter leading-tight mt-1.5 mb-1">Built for privacy.</h2>
+                  <h2 className="text-[22px] sm:text-2xl md:text-[34px] font-black tracking-tighter leading-tight mb-1">Built for privacy.</h2>
                   <p className="text-[#888] text-xs sm:text-sm">Key features for privacy and scale.</p>
                 </div>
 
