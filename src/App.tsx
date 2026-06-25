@@ -45,7 +45,7 @@ export default function App() {
             </h1>
 
             <p className="text-[17px] sm:text-xl md:text-2xl text-[#aaa] max-w-[40ch] leading-tight mb-9 border-l-[3px] border-[#CCFF00] pl-5">
-              Run normal SQL on data that stays encrypted. Even during computation.<br className="hidden md:block" /> Post-quantum secure. Built for real apps.
+              Run SQL on data that stays encrypted. Even during computation.<br className="hidden md:block" /> Post-quantum secure. Built for real apps.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full max-w-xs sm:max-w-none">
