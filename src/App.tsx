@@ -68,63 +68,87 @@ export default function App() {
         </section>
 
         {!isMobile ? (
-          /* DESKTOP: One combined second scroll with How It Works + Built for privacy + Get started */
-          <section className="h-full w-full snap-start flex flex-col justify-center px-12 bg-[#070707] py-8 gap-24 overflow-hidden">
-            {/* How it works */}
-            <div className="w-full max-w-6xl mx-auto shrink-0 mb-8">
-              <div className="mb-3">
-                <h2 className="text-3xl font-black tracking-tighter mb-1">Your data never leaves encrypted.</h2>
-                <p className="text-[#888] text-sm">See exactly what happens to your query. Start to finish.</p>
-              </div>
-              <HowItWorks />
-            </div>
-
-            {/* Built for privacy */}
-            <div className="w-full max-w-6xl mx-auto shrink-0 pt-8">
-              <div className="mb-4">
-                <h2 className="text-3xl font-black tracking-tighter mb-1">Built for privacy.</h2>
-                <p className="text-[#888] text-base">Key features for privacy and scale.</p>
+          <>
+            {/* HOW IT WORKS - full screen (desktop) */}
+            <section className="h-full w-full snap-start flex flex-col justify-center px-12 bg-[#070707] overflow-hidden">
+              <div className="w-full max-w-6xl mx-auto">
+                <div className="mb-6">
+                  <span className="font-mono text-[11px] tracking-[3px] uppercase text-[#CCFF00]">// 01 — Flow</span>
+                  <h2 className="text-4xl font-black tracking-tighter mt-3 mb-1">Your data never leaves encrypted.</h2>
+                  <p className="text-[#888] text-base">See exactly what happens to your query. Start to finish.</p>
+                </div>
+                <HowItWorks />
               </div>
 
-              <div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Shield className="text-[#CCFF00] mb-3" size={20} />
-                    <h3 className="font-semibold text-lg mb-1">Post-quantum secure.</h3>
-                    <p className="text-[#999] text-sm">Lattice cryptography that protects against current and future quantum threats.</p>
-                  </div>
-                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Fingerprint className="text-[#CCFF00] mb-3" size={20} />
-                    <h3 className="font-semibold text-lg mb-1">Private information retrieval.</h3>
-                    <p className="text-[#999] text-sm">The database never sees your queries or results. Everything stays encrypted.</p>
-                  </div>
-                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Code className="text-[#CCFF00] mb-3" size={20} />
-                    <h3 className="font-semibold text-lg mb-1">SQL.</h3>
-                    <p className="text-[#999] text-sm">Write normal SQL queries as usual.</p>
-                  </div>
-                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Network className="text-[#CCFF00] mb-3" size={20} />
-                    <h3 className="font-semibold text-lg mb-1">Real scale.</h3>
-                    <p className="text-[#999] text-sm">Horizontally scalable across a cluster with linear performance.</p>
-                  </div>
-                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <EyeOff className="text-[#CCFF00] mb-3" size={20} />
-                    <h3 className="font-semibold text-lg mb-1">Plausible deniability.</h3>
-                    <p className="text-[#999] text-sm">We cannot tell which part of the database was accessed.</p>
-                  </div>
+              {/* Scroll hint */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#555] font-mono text-[10px] tracking-widest uppercase">
+                <span>Scroll</span>
+                <span className="animate-bounce text-[#CCFF00] text-lg">↓</span>
+              </div>
+            </section>
+
+            {/* BUILT FOR PRIVACY - full screen (desktop) */}
+            <section className="h-full w-full snap-start flex flex-col justify-center px-12 overflow-hidden">
+              <div className="w-full max-w-6xl mx-auto">
+                <div className="mb-8">
+                  <span className="font-mono text-[11px] tracking-[3px] uppercase text-[#CCFF00]">// 02 — Features</span>
+                  <h2 className="text-4xl font-black tracking-tighter mt-3 mb-1">Built for privacy.</h2>
+                  <p className="text-[#888] text-base">Key features for privacy and scale.</p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  {[
+                    { Icon: Shield, title: 'Post-quantum secure.', desc: 'Lattice cryptography that protects against current and future quantum threats.' },
+                    { Icon: Fingerprint, title: 'Private information retrieval.', desc: 'The database never sees your queries or results. Everything stays encrypted.' },
+                    { Icon: Code, title: 'SQL.', desc: 'Write normal SQL queries as usual. No new query language to learn.' },
+                    { Icon: Network, title: 'Real scale.', desc: 'Horizontally scalable across a cluster with linear performance.' },
+                    { Icon: EyeOff, title: 'Plausible deniability.', desc: 'We cannot tell which part of the database was accessed.' },
+                  ].map(({ Icon, title, desc }) => (
+                    <div
+                      key={title}
+                      className="group relative p-5 bg-[#0A0A0B] border border-[#222] rounded-lg overflow-hidden transition-all duration-300 hover:border-[#CCFF00]/60 hover:-translate-y-1 hover:bg-[#0d0d0e]"
+                    >
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_top_left,rgba(204,255,0,0.08),transparent_60%)]" />
+                      <div className="relative">
+                        <div className="w-9 h-9 flex items-center justify-center rounded bg-[#CCFF00]/10 border border-[#CCFF00]/20 mb-4 transition-colors group-hover:bg-[#CCFF00]/20">
+                          <Icon className="text-[#CCFF00]" size={18} />
+                        </div>
+                        <h3 className="font-semibold text-lg mb-1.5">{title}</h3>
+                        <p className="text-[#999] text-sm leading-relaxed">{desc}</p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* CTA card */}
+                  <a
+                    href="https://github.com/opaquedb/opaquedb"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group relative p-5 rounded-lg overflow-hidden bg-[#CCFF00] text-black flex flex-col justify-between transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div>
+                      <div className="w-9 h-9 flex items-center justify-center rounded bg-black/10 mb-4">
+                        <Github className="text-black" size={18} />
+                      </div>
+                      <h3 className="font-black text-lg mb-1.5 tracking-tight">Open source.</h3>
+                      <p className="text-black/70 text-sm leading-relaxed">Read the code, run it yourself, contribute.</p>
+                    </div>
+                    <span className="mt-4 inline-flex items-center gap-1 font-semibold text-sm">
+                      View on GitHub <span className="transition-transform group-hover:translate-x-1">→</span>
+                    </span>
+                  </a>
                 </div>
               </div>
-            </div>
-
-          </section>
+            </section>
+          </>
         ) : (
           <>
             {/* HOW IT WORKS - full screen (mobile) */}
             <section className="h-full w-full snap-start flex flex-col items-center justify-start px-6 lg:px-12 bg-[#070707] overflow-hidden pt-2 sm:pt-4">
               <div className="w-full max-w-6xl max-h-full overflow-hidden flex flex-col pb-8 sm:pb-12">
                 <div className="mb-1 sm:mb-2 shrink-0">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-black tracking-[-1px] mb-1 leading-tight">Your data never leaves encrypted.</h2>
+                  <span className="font-mono text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#CCFF00]">// 01 — Flow</span>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-black tracking-[-1px] mt-1.5 mb-1 leading-tight">Your data never leaves encrypted.</h2>
                   <p className="text-[#aaa] text-xs sm:text-sm max-w-[48ch]">See exactly what happens to your query. Start to finish.</p>
                 </div>
 
@@ -138,41 +162,46 @@ export default function App() {
             <section className="h-full w-full snap-start flex flex-col items-center justify-start px-6 lg:px-12 relative pt-6 sm:pt-8">
               <div className="w-full max-w-5xl">
                 <div className="max-w-md mb-3 sm:mb-4 pt-1">
-                  <h2 className="text-[22px] sm:text-2xl md:text-[34px] font-black tracking-tighter leading-tight mb-1">Built for privacy.</h2>
+                  <span className="font-mono text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#CCFF00]">// 02 — Features</span>
+                  <h2 className="text-[22px] sm:text-2xl md:text-[34px] font-black tracking-tighter leading-tight mt-1.5 mb-1">Built for privacy.</h2>
                   <p className="text-[#888] text-xs sm:text-sm">Key features for privacy and scale.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-6">
-                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Shield className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
-                    <Shield className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
-                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Post-quantum secure.</h3>
-                    <p className="text-[10px] sm:text-xs text-[#999]">Lattice cryptography that protects against current and future quantum threats.</p>
-                  </div>
-                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Fingerprint className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
-                    <Fingerprint className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
-                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Private information retrieval.</h3>
-                    <p className="text-[10px] sm:text-xs text-[#999]">The database never sees your queries or results. Everything stays encrypted.</p>
-                  </div>
-                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Code className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
-                    <Code className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
-                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">SQL.</h3>
-                    <p className="text-[10px] sm:text-xs text-[#999]">Write normal SQL queries as usual.</p>
-                  </div>
-                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <Network className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
-                    <Network className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
-                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Real scale.</h3>
-                    <p className="text-[10px] sm:text-xs text-[#999]">Horizontally scalable across a cluster with linear performance.</p>
-                  </div>
-                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
-                    <EyeOff className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
-                    <EyeOff className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
-                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Plausible deniability.</h3>
-                    <p className="text-[10px] sm:text-xs text-[#999]">We cannot tell which part of the database was accessed.</p>
-                  </div>
+                  {[
+                    { Icon: Shield, title: 'Post-quantum secure.', desc: 'Lattice cryptography that protects against current and future quantum threats.' },
+                    { Icon: Fingerprint, title: 'Private information retrieval.', desc: 'The database never sees your queries or results. Everything stays encrypted.' },
+                    { Icon: Code, title: 'SQL.', desc: 'Write normal SQL queries as usual.' },
+                    { Icon: Network, title: 'Real scale.', desc: 'Horizontally scalable across a cluster with linear performance.' },
+                    { Icon: EyeOff, title: 'Plausible deniability.', desc: 'We cannot tell which part of the database was accessed.' },
+                  ].map(({ Icon, title, desc }) => (
+                    <div key={title} className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded-lg">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded bg-[#CCFF00]/10 border border-[#CCFF00]/20 mb-2 sm:mb-3">
+                        <Icon className="text-[#CCFF00]" size={15} />
+                      </div>
+                      <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">{title}</h3>
+                      <p className="text-[10px] sm:text-xs text-[#999] leading-relaxed">{desc}</p>
+                    </div>
+                  ))}
+
+                  {/* CTA card */}
+                  <a
+                    href="https://github.com/opaquedb/opaquedb"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group p-3 sm:p-4 bg-[#CCFF00] text-black rounded-lg flex flex-col justify-between active:opacity-90"
+                  >
+                    <div>
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded bg-black/10 mb-2 sm:mb-3">
+                        <Github className="text-black" size={15} />
+                      </div>
+                      <h3 className="font-black mb-1 text-sm sm:text-[15px] tracking-tight">Open source.</h3>
+                      <p className="text-[10px] sm:text-xs text-black/70">Read the code, run it yourself, contribute.</p>
+                    </div>
+                    <span className="mt-2 sm:mt-3 inline-flex items-center gap-1 font-semibold text-xs sm:text-sm">
+                      View on GitHub <span>→</span>
+                    </span>
+                  </a>
                 </div>
 
               </div>
