@@ -1,145 +1,197 @@
-import { useEffect, useState, useRef } from 'react';
-import { motion, useInView } from 'motion/react';
-import { Database, Lock, Laptop, Key } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
+import { Database, Lock, Code } from 'lucide-react';
 
 export default function HowItWorks() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: false, amount: 0.2 });
   const [step, setStep] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Always-running cycle
   useEffect(() => {
-    if (!isInView) {
-      setStep(0);
-      return;
-    }
     const timer = setInterval(() => {
       setStep((prev) => (prev + 1) % 4);
-    }, 3500); // slightly longer for reading
+    }, 1950);
     return () => clearInterval(timer);
-  }, [isInView]);
+  }, []);
 
-  const sqlQuery = "SELECT temp FROM weather WHERE city='London'";
-  const encryptedQuery = "0x8F9A...E2B1";
-  const encryptedResult = "0x4C7D...F9A3";
-  const decryptedResult = "{ temp: 18 }";
+  // Responsive detection for animation layout
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
-  const descriptions = [
-    "1. Client writes SQL query locally.",
-    "2. Query is encrypted (FHE) & transmitted.",
-    "3. Cluster computes directly on ciphertext shards.",
-    "4. Encrypted result is returned & decrypted."
+  // Friendly sample data
+  const plainQuery = "SELECT temp FROM weather WHERE city='London'";
+  const encQuery = "0xA7F3...91B2";
+  const encResult = "0xC12E...4D9F";
+  const plainResult = "{ temp: 18 }";
+
+  const stepLabels = [
+    "1. Write normal SQL in the client",
+    "2. Query parameters are encrypted before leaving",
+    "3. The cluster computes on encrypted data",
+    "4. Encrypted result comes back. Only you decrypt it"
   ];
 
-  return (
-    <div ref={containerRef} className="w-full border border-[#333] bg-[#0A0A0B] p-6 md:p-12 relative overflow-hidden shadow-2xl">
-      {/* Grid background */}
-      <div className="absolute inset-0 border border-[#222] grid grid-cols-8 grid-rows-8 opacity-20 pointer-events-none">
-        {Array.from({ length: 64 }).map((_, i) => (
-          <div key={i} className="border border-[#333] w-full h-full" />
-        ))}
-      </div>
+  // Animation targets — horizontal on desktop, vertical on mobile
+  const isOutbound = step === 1 || step === 2;   // packet traveling toward server
+  const packetVisible = step === 1 || step === 3;
 
-      {/* Scrolling wrapper for mobile */}
-      <div className="overflow-x-auto pb-8 hide-scrollbar">
-        <div className="flex flex-row items-center justify-between gap-4 md:gap-12 relative z-10 py-8 min-w-[600px] px-4 md:px-0">
-          {/* Client Side */}
-          <div className="flex flex-col items-center gap-4 w-56 shrink-0 h-[190px]">
-            <div className="w-full h-full bg-[#111] border border-[#333] flex flex-col justify-between relative p-4 pt-6">
-              <div className="absolute top-0 right-0 px-2 py-1 bg-[#222] border-l border-b border-[#555] flex items-center gap-1 z-20">
-                <Key className="text-[#AAA]" size={10} />
-                <span className="text-[#AAA] text-[8px] font-mono font-bold uppercase whitespace-nowrap">Pub Key</span>
+  // Full travel for clear movement between boxes
+  const desktopLeft = isOutbound ? '94%' : '6%';
+  const mobileTop = isOutbound ? '92%' : '8%';
+
+  return (
+    <div className="w-full h-full flex flex-col">
+      {/* The visual */}
+      <div className={`border border-[#222] bg-[#0A0A0B] p-3 sm:p-4 md:p-5 rounded-lg overflow-hidden flex-1 ${isMobile ? 'flex flex-col min-h-[320px] sm:min-h-[360px]' : 'min-h-[220px] md:min-h-[260px]'}`}>
+        {/* Responsive container */}
+        <div className={`flex ${isMobile ? 'flex-col items-center gap-5 h-full flex-1' : 'flex-row items-center justify-between gap-4 md:gap-6'} relative z-10 py-1`}>
+          
+          {/* CLIENT */}
+          <div className={`${isMobile ? 'w-full max-w-[280px] flex-1 min-h-[140px]' : 'shrink-0 w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px]'}`}>
+            <div
+              className={`bg-[#111] border flex flex-col p-2.5 sm:p-3 rounded transition-colors h-full ${isMobile ? '' : 'h-32 sm:h-36 md:h-40'} ${step === 0 || step === 3 ? 'border-[#CCFF00]/70' : 'border-[#222]'}`}
+            >
+              <div className="flex items-center justify-between mb-2 text-[9px] sm:text-[10px] md:text-xs tracking-widest uppercase text-[#666]">
+                <div className="flex items-center gap-1.5 text-white/80">
+                  <Code size={12} /> <span className="font-medium">Client</span>
+                </div>
+                <span className="font-mono text-[8px] sm:text-[9px] text-[#CCFF00]">App</span>
               </div>
-              <div className="flex items-center gap-2 mb-2 border-b border-[#222] pb-2">
-                <Laptop className="text-white" size={16} />
-                <span className="font-black text-[10px] tracking-widest uppercase text-[#777]">Client</span>
+
+              <div className="flex-1 flex items-center justify-center bg-[#050505] border border-[#1f1f1f] px-1.5 py-1 text-[#CCFF00] font-mono text-[9px] sm:text-[10px] md:text-[11px] leading-tight text-center overflow-hidden">
+                {step === 0 ? plainQuery : step === 3 ? plainResult : encQuery}
               </div>
-              <div className="font-mono text-[10px] md:text-[12px] text-[#CCFF00] flex-1 w-full flex items-center justify-center text-center bg-[#050505] p-2 border border-[#222] break-words whitespace-pre-wrap leading-tight overflow-hidden">
-                {step === 0 ? sqlQuery : step === 3 ? decryptedResult : encryptedQuery}
+
+              <div className="mt-2 text-[8px] sm:text-[9px] md:text-[10px] font-mono text-[#777] flex items-center gap-1">
+                <Lock size={10} /> Private key stays here
               </div>
-              <motion.div
-                animate={{ opacity: step === 0 || step === 3 ? 1 : 0 }}
-                className="absolute bottom-0 right-0 px-2 py-1 bg-[#222] border-l border-t border-[#CCFF00] flex items-center gap-1 shadow-[0_0_10px_rgba(204,255,0,0.2)] z-20"
-              >
-                <Key className="text-[#CCFF00]" size={10} />
-                <span className="text-[#CCFF00] text-[8px] font-mono font-bold uppercase whitespace-nowrap">Priv Key</span>
-              </motion.div>
             </div>
           </div>
 
-          {/* Network / Animation Area */}
-          <div className="flex-1 w-full h-32 relative flex items-center justify-center min-w-[150px]">
-            {/* Track line */}
-            <div className="absolute left-0 right-0 h-[1px] opacity-30 dashed-line" />
+          {/* CONNECTION + ANIMATED PACKET */}
+          <div className={`flex items-center justify-center ${isMobile ? 'shrink-0 min-h-[96px] py-2' : 'flex-1 min-w-[100px] px-2'}`}>
+            <div className={`${isMobile ? 'w-[3px] h-full min-h-[88px]' : 'w-full h-32 sm:h-36 md:h-40'} relative flex items-center justify-center`}>
+              {/* The animated dotted road (the dashed line itself is animated via CSS) */}
+              {!isMobile && (
+                <div className="absolute left-0 right-0 top-1/2 h-px dashed-line" />
+              )}
 
-            {/* The Data Packet */}
-            <motion.div
-              initial={false}
-              animate={{
-                left: step === 0 || step === 3 ? '10%' : '90%',
-                x: '-50%',
-                opacity: step === 1 || step === 3 ? 1 : 0,
-                scale: step === 1 || step === 3 ? 1 : 0.8,
-              }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute flex items-center gap-2 px-3 py-2 bg-[#CCFF00] text-black z-20 shadow-[0_0_20px_rgba(204,255,0,0.4)]"
-            >
-              <Lock size={12} className="text-black" />
-              <span className="font-mono text-[10px] font-bold uppercase whitespace-nowrap">
-                {step === 1 ? encryptedQuery : encryptedResult}
-              </span>
-            </motion.div>
+              {isMobile && (
+                <div className="absolute top-0 bottom-0 left-1/2 w-px -translate-x-1/2 dashed-line-vertical" />
+              )}
+
+              {/* The packet - cool glowing data mover, more understandable with full labels */}
+              <motion.div
+                initial={false}
+                animate={{
+                  ...(isMobile
+                    ? { top: mobileTop, left: '50%', x: '-50%', y: '-50%' }
+                    : { left: desktopLeft, top: '50%', x: '-50%', y: '-50%' }
+                  ),
+                  opacity: packetVisible ? 1 : 0,
+                  scale: packetVisible ? 1 : 0.8,
+                }}
+                transition={{
+                  left: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+                  top: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+                  opacity: { duration: 0.15 },
+                  scale: { duration: 0.15 },
+                }}
+                className="absolute z-20 flex items-center gap-1 px-2 py-0.5 sm:py-1 bg-[#CCFF00] text-black font-mono text-[8px] sm:text-[9px] md:text-[10px] font-semibold tracking-[0.3px] shadow-[0_0_0_1px_#000,0_0_24px_rgba(204,255,0,0.5)] whitespace-nowrap"
+              >
+                <Lock size={10} />
+                <span>{step === 1 ? "ENCRYPTED QUERY" : "ENCRYPTED RESULT"}</span>
+              </motion.div>
+
+
+            </div>
           </div>
 
-          {/* Server Side */}
-          <div className="flex flex-col items-center gap-4 w-56 shrink-0 h-[190px]">
-            <motion.div
-              animate={{
-                borderColor: step === 2 ? "#CCFF00" : "#333",
-              }}
-              className="w-full h-full bg-[#111] border flex flex-col justify-between relative transition-colors duration-500 overflow-visible p-4 pt-6"
+          {/* SERVER / CLUSTER */}
+          <div className={`${isMobile ? 'w-full max-w-[280px] flex-1 min-h-[140px]' : 'shrink-0 w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px]'}`}>
+            <div
+              className={`bg-[#111] border flex flex-col p-2.5 sm:p-3 rounded transition-colors h-full ${isMobile ? '' : 'h-32 sm:h-36 md:h-40'} ${step === 2 ? 'border-[#CCFF00]/70' : 'border-[#222]'}`}
             >
-              <div className="absolute top-0 right-0 px-2 py-1 bg-[#222] border-l border-b border-[#555] flex items-center gap-1 z-20">
-                <Key className="text-[#AAA]" size={10} />
-                <span className="text-[#AAA] text-[8px] font-mono font-bold uppercase whitespace-nowrap">Pub Key</span>
-              </div>
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2 border-b border-[#222] pb-2 relative z-10">
-                  <span className="font-black text-[10px] tracking-widest uppercase text-[#999]">Opaque Cluster</span>
-                  <Database className={step === 2 ? "text-[#CCFF00]" : "text-[#777]"} size={20} />
+              <div className="flex items-center justify-between mb-2 text-[9px] sm:text-[10px] md:text-xs tracking-widest uppercase text-[#666]">
+                <div className="flex items-center gap-1.5 text-white/80">
+                  <Database size={12} /> <span className="font-medium">OpaqueDB</span>
                 </div>
+                <span className="font-mono text-[8px] sm:text-[9px] text-[#CCFF00]">Encrypted</span>
+              </div>
 
-                {/* Shard Representation */}
-                <div className="flex gap-1 mb-2 relative z-10">
-                  <div className={`h-1.5 flex-1 ${step === 2 ? 'bg-[#CCFF00]' : 'bg-[#333]'} transition-colors duration-500`}></div>
-                  <div className={`h-1.5 flex-1 ${step === 2 ? 'bg-[#CCFF00]' : 'bg-[#333]'} transition-colors duration-500 delay-75`}></div>
-                  <div className={`h-1.5 flex-1 ${step === 2 ? 'bg-[#CCFF00]' : 'bg-[#333]'} transition-colors duration-500 delay-150`}></div>
-                </div>
+              <div className="flex-1 flex items-center justify-center bg-[#050505] border border-[#1f1f1f] px-1.5 py-1 text-[#CCFF00] font-mono text-[9px] sm:text-[10px] md:text-[11px] leading-tight text-center">
+                {step === 2 ? (
+                  <span className="flex items-center gap-1.5">
+                    COMPUTING
+                    <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 0.9, repeat: Infinity }}>▌</motion.span>
+                  </span>
+                ) : "WAITING"}
               </div>
-              
-              <div className="font-mono text-[10px] md:text-[12px] text-[#CCFF00] flex-1 w-full flex items-center justify-center text-center bg-[#050505] p-2 border border-[#222] relative z-10 break-words whitespace-pre-wrap leading-tight overflow-hidden">
-                {step === 2 ? `EVAL(${encryptedQuery})` : "AWAITING_QUERY"}
+
+              {/* Visual shards — active during compute */}
+              <div className="mt-2.5 flex gap-1">
+                {[0,1,2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="h-1 flex-1 bg-[#222]"
+                    animate={{
+                      backgroundColor: step === 2 ? "#CCFF00" : "#222",
+                      scaleX: step === 2 ? [1, 1.1, 1] : 1,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: step === 2 ? i * 0.06 : 0,
+                      repeat: step === 2 ? Infinity : 0,
+                      repeatType: "reverse",
+                    }}
+                  />
+                ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 text-center h-8 relative z-10 flex justify-center">
-        <motion.div
-          key={step}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="px-4 py-2 bg-[#222] border border-[#333] inline-flex items-center max-w-full"
-        >
-          <span className="font-mono text-[#CCFF00] text-[9px] md:text-[10px] uppercase tracking-widest font-bold">
-            {descriptions[step]}
-          </span>
-        </motion.div>
+      {/* Step indicator + description — always visible, clear */}
+      <div className="flex flex-col items-center mt-2 sm:mt-4">
+        <div className="flex gap-1.5 mb-1.5">
+          {[0,1,2,3].map((i) => (
+            <motion.div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full"
+              animate={{ backgroundColor: i === step ? "#CCFF00" : "#333" }}
+              transition={{ duration: 0.2 }}
+            />
+          ))}
+        </div>
+        <div className="font-mono text-[8px] sm:text-[9px] md:text-xs text-[#CCFF00] tracking-[0.4px] px-2 sm:px-3 py-0.5 sm:py-1 bg-[#111] border border-[#222] rounded text-center max-w-[95%]">
+          {stepLabels[step]}
+        </div>
       </div>
+
       <style>{`
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .dashed-line { background-image: repeating-linear-gradient(90deg, #CCFF00 0, #CCFF00 4px, transparent 4px, transparent 8px); background-color: transparent; }
+        .dashed-line {
+          background-image: repeating-linear-gradient(90deg, #CCFF00 0, #CCFF00 5px, transparent 5px, transparent 12px);
+          background-size: 24px 3px;
+          animation: dash-flow 1.2s linear infinite;
+          background-color: transparent;
+        }
+        @keyframes dash-flow {
+          to { background-position: 24px 0; }
+        }
+        .dashed-line-vertical {
+          background-image: repeating-linear-gradient(0deg, #CCFF00 0, #CCFF00 5px, transparent 5px, transparent 12px);
+          background-size: 3px 24px;
+          animation: dash-flow-vertical 1.2s linear infinite;
+          background-color: transparent;
+        }
+        @keyframes dash-flow-vertical {
+          to { background-position: 0 24px; }
+        }
       `}</style>
     </div>
   );

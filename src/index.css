@@ -18,6 +18,12 @@ body {
   color: #000000;
 }
 
+/* Clean, minimal scrollbars when needed */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #222 #050505;
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -25,3 +31,5 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+

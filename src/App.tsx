@@ -3,170 +3,183 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
-import { Github, Terminal, Book, Shield, Network, EyeOff, Fingerprint, ChevronDown } from 'lucide-react';
-import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { Github, Shield, Network, EyeOff, Fingerprint, Code } from 'lucide-react';
 import HowItWorks from './components/HowItWorks';
 
 export default function App() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   return (
     <div className="h-[100dvh] w-full flex flex-col font-sans bg-[#050505] text-[#FFFFFF] border-4 md:border-8 border-[#111111] overflow-hidden">
       {/* Header */}
-      <header className="flex-none flex items-center justify-between px-6 py-5 md:px-12 border-b border-[#111] z-50 bg-[#050505]">
+      <header className="flex-none flex items-center justify-between px-5 py-3.5 md:px-8 border-b border-[#111] z-50 bg-[#050505]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#CCFF00] rotate-45 flex items-center justify-center">
-            <EyeOff className="text-black -rotate-45" size={18} strokeWidth={3} />
+          <div className="w-7 h-7 bg-[#CCFF00] rotate-45 flex items-center justify-center">
+            <EyeOff className="text-black -rotate-45" size={15} strokeWidth={3} />
           </div>
-          <span className="font-sans font-black text-xl tracking-tighter uppercase text-white">OpaqueDB</span>
+          <span className="font-black tracking-[-1.5px] text-lg uppercase">OpaqueDB</span>
         </div>
-        <a href="https://github.com/opaquedb/opaquedb" className="text-[#777] hover:text-[#CCFF00] transition-colors p-2" target="_blank" rel="noreferrer" aria-label="GitHub Repository">
-          <Github size={20} />
-        </a>
+        <div className="flex items-center gap-4 text-sm">
+          <a href="https://github.com/opaquedb/opaquedb" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-1.5 rounded border border-[#333] hover:border-[#CCFF00] hover:text-[#CCFF00] transition-all text-sm">
+            <Github size={16} /> <span>GitHub</span>
+          </a>
+        </div>
       </header>
 
-      {/* Main Scroll Container */}
+      {/* Main Scroll Container - full page snap */}
       <main className="flex-1 overflow-y-scroll snap-y snap-mandatory scroll-smooth hide-scrollbar relative">
         
-        {/* HERO SECTION */}
-        <section className="min-h-full w-full snap-start flex flex-col items-center justify-center px-6 py-12 relative">
-          <div className="max-w-5xl w-full flex flex-col items-start space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              className="px-4 py-2 border border-[#333] text-[10px] font-mono tracking-widest uppercase text-[#CCFF00]"
-            >
-              Open Source
-            </motion.div>
+        {/* HERO - full screen */}
+        <section className="h-full w-full snap-start flex flex-col items-center justify-center px-6 lg:px-12 relative">
+          <div className="max-w-3xl w-full">
+            <h1 className="text-[48px] leading-[0.92] sm:text-[60px] md:text-[76px] font-black tracking-[-3px] mb-6">
+              The private<br />database.
+            </h1>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              className="text-4xl sm:text-6xl md:text-[80px] font-black tracking-tighter text-white leading-[0.9] uppercase text-left max-w-4xl"
-            >
-              Post-Quantum <br className="hidden md:block" />
-              <span className="text-[#CCFF00] inline-flex flex-wrap gap-x-6 sm:gap-x-8 md:gap-x-12">
-                <span>Private</span>
-                <span>Database.</span>
-              </span>
-            </motion.h1>
+            <p className="text-[17px] sm:text-xl md:text-2xl text-[#aaa] max-w-[40ch] leading-tight mb-9 border-l-[3px] border-[#CCFF00] pl-5">
+              Run normal SQL on data that stays encrypted. Even during computation.<br className="hidden md:block" /> Post-quantum secure. Built for real apps.
+            </p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-base md:text-lg text-[#AAA] max-w-2xl leading-relaxed border-l-2 border-[#CCFF00] pl-6 text-left"
-            >
-              {"An open-source distributed database built on Fully Homomorphic Encryption. Execute standard SQL directly on encrypted datasets across a horizontally scalable cluster, guaranteeing absolute privacy for your data and queries."}
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 w-full max-w-3xl"
-            >
-              <a href="https://github.com/opaquedb/opaquedb" target="_blank" rel="noreferrer" className="group border border-[#333] bg-[#0A0A0B] p-5 flex flex-col justify-between h-28 hover:border-[#CCFF00] transition-colors">
-                <span className="font-mono text-[10px] text-[#777] uppercase tracking-widest group-hover:text-[#CCFF00] transition-colors">Repository</span>
-                <div className="flex justify-between items-end">
-                  <span className="text-xl font-black uppercase text-white group-hover:text-[#CCFF00] transition-colors">GitHub</span>
-                  <Github size={20} className="text-white group-hover:text-[#CCFF00] transition-colors" />
-                </div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full max-w-xs sm:max-w-none">
+              <a href="https://github.com/opaquedb/opaquedb" target="_blank" rel="noreferrer"
+                 className="inline-flex items-center justify-center gap-2 px-5 sm:px-7 h-10 sm:h-12 text-sm sm:text-base bg-white text-black font-semibold rounded hover:bg-[#CCFF00] active:bg-[#CCFF00] transition-colors">
+                <Github size={16} className="sm:hidden" /> <Github size={18} className="hidden sm:block" /> View on GitHub
               </a>
-              <a href="https://github.com/opaquedb/opaquedb" target="_blank" rel="noreferrer" className="group border border-[#333] bg-[#0A0A0B] p-5 flex flex-col justify-between h-28 hover:border-[#CCFF00] transition-colors">
-                <span className="font-mono text-[10px] text-[#777] uppercase tracking-widest group-hover:text-[#CCFF00] transition-colors">Integration</span>
-                <div className="flex justify-between items-end">
-                  <span className="text-xl font-black uppercase text-white group-hover:text-[#CCFF00] transition-colors">Client SDKs</span>
-                  <Terminal size={20} className="text-white group-hover:text-[#CCFF00] transition-colors" />
-                </div>
+              <a href="https://docs.opaquedb.io" target="_blank" rel="noreferrer"
+                 className="inline-flex items-center justify-center gap-2 px-5 sm:px-7 h-10 sm:h-12 text-sm sm:text-base border border-[#444] hover:border-white text-white font-medium rounded transition-colors">
+                Read the docs
               </a>
-              <a href="https://docs.opaquedb.io" target="_blank" rel="noreferrer" className="group border border-[#333] bg-[#0A0A0B] p-5 flex flex-col justify-between h-28 hover:border-[#CCFF00] transition-colors">
-                <span className="font-mono text-[10px] text-[#777] uppercase tracking-widest group-hover:text-[#CCFF00] transition-colors">Technical</span>
-                <div className="flex justify-between items-end">
-                  <span className="text-xl font-black uppercase text-white group-hover:text-[#CCFF00] transition-colors">Docs</span>
-                  <Book size={20} className="text-white group-hover:text-[#CCFF00] transition-colors" />
-                </div>
-              </a>
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#555] font-mono text-[10px] tracking-widest uppercase"
-          >
+          {/* Scroll hint */}
+          <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#555] font-mono text-[9px] sm:text-[10px] tracking-widest uppercase">
             <span>Scroll</span>
-            <ChevronDown size={14} className="animate-bounce text-[#CCFF00]" />
-          </motion.div>
-        </section>
-
-        {/* ANIMATION SECTION */}
-        <section className="min-h-full w-full snap-start flex flex-col items-center justify-center px-6 py-12 relative bg-[#070707]">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-            className="w-full max-w-5xl"
-          >
-            <HowItWorks />
-          </motion.div>
-        </section>
-
-        {/* FEATURES SECTION */}
-        <section className="min-h-full w-full snap-start flex flex-col items-center justify-center px-6 py-12 relative">
-          <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <FeatureCard
-              icon={<Shield className="text-[#CCFF00]" size={24} />}
-              title="Post-Quantum Secure"
-              description="Built on lattice-based cryptography, protecting your data against future attacks from quantum computers."
-            />
-            <FeatureCard
-              icon={<Fingerprint className="text-[#CCFF00]" size={24} />}
-              title="Private Info Retrieval"
-              description="Retrieve records seamlessly without revealing your access patterns to the database operator."
-            />
-            <FeatureCard
-              icon={<Network className="text-[#CCFF00]" size={24} />}
-              title="Distributed & Scalable"
-              description="Horizontally scalable architecture built to parallelize computationally heavy encrypted queries across clusters."
-            />
+            <span className="animate-bounce text-[#CCFF00] text-base sm:text-lg">↓</span>
           </div>
-
-          <footer className="absolute bottom-0 left-0 w-full border-t border-[#111] py-6 px-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#050505]">
-            <div className="flex items-center gap-3">
-              <EyeOff className="text-[#555]" size={16} />
-              <span className="font-sans font-black tracking-tighter uppercase text-[#555]">OpaqueDB</span>
-            </div>
-            <div className="flex items-center gap-6 text-[10px] font-mono font-bold tracking-widest uppercase text-[#555]">
-              <a href="https://github.com/opaquedb/opaquedb" target="_blank" rel="noreferrer" className="hover:text-[#CCFF00] transition-colors">GitHub</a>
-              <a href="https://docs.opaquedb.io" target="_blank" rel="noreferrer" className="hover:text-[#CCFF00] transition-colors">Docs</a>
-              <a href="https://github.com/opaquedb/opaquedb/blob/main/LICENSE" target="_blank" rel="noreferrer" className="hover:text-[#CCFF00] transition-colors">License</a>
-            </div>
-          </footer>
         </section>
 
+        {!isMobile ? (
+          /* DESKTOP: One combined second scroll with How It Works + Built for privacy + Get started */
+          <section className="h-full w-full snap-start flex flex-col justify-center px-12 bg-[#070707] py-8 gap-24 overflow-hidden">
+            {/* How it works */}
+            <div className="w-full max-w-6xl mx-auto shrink-0 mb-8">
+              <div className="mb-3">
+                <h2 className="text-3xl font-black tracking-tighter mb-1">Your data never leaves encrypted.</h2>
+                <p className="text-[#888] text-sm">See exactly what happens to your query. Start to finish.</p>
+              </div>
+              <HowItWorks />
+            </div>
+
+            {/* Built for privacy */}
+            <div className="w-full max-w-6xl mx-auto shrink-0 pt-8">
+              <div className="mb-4">
+                <h2 className="text-3xl font-black tracking-tighter mb-1">Built for privacy.</h2>
+                <p className="text-[#888] text-base">Key features for privacy and scale.</p>
+              </div>
+
+              <div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Shield className="text-[#CCFF00] mb-3" size={20} />
+                    <h3 className="font-semibold text-lg mb-1">Post-quantum secure.</h3>
+                    <p className="text-[#999] text-sm">Lattice cryptography that protects against current and future quantum threats.</p>
+                  </div>
+                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Fingerprint className="text-[#CCFF00] mb-3" size={20} />
+                    <h3 className="font-semibold text-lg mb-1">Private information retrieval.</h3>
+                    <p className="text-[#999] text-sm">The database never sees your queries or results. Everything stays encrypted.</p>
+                  </div>
+                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Code className="text-[#CCFF00] mb-3" size={20} />
+                    <h3 className="font-semibold text-lg mb-1">SQL.</h3>
+                    <p className="text-[#999] text-sm">Write normal SQL queries as usual.</p>
+                  </div>
+                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Network className="text-[#CCFF00] mb-3" size={20} />
+                    <h3 className="font-semibold text-lg mb-1">Real scale.</h3>
+                    <p className="text-[#999] text-sm">Horizontally scalable across a cluster with linear performance.</p>
+                  </div>
+                  <div className="p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <EyeOff className="text-[#CCFF00] mb-3" size={20} />
+                    <h3 className="font-semibold text-lg mb-1">Plausible deniability.</h3>
+                    <p className="text-[#999] text-sm">We cannot tell which part of the database was accessed.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+        ) : (
+          <>
+            {/* HOW IT WORKS - full screen (mobile) */}
+            <section className="h-full w-full snap-start flex flex-col items-center justify-start px-6 lg:px-12 bg-[#070707] overflow-hidden pt-2 sm:pt-4">
+              <div className="w-full max-w-6xl max-h-full overflow-hidden flex flex-col pb-8 sm:pb-12">
+                <div className="mb-1 sm:mb-2 shrink-0">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-black tracking-[-1px] mb-1 leading-tight">Your data never leaves encrypted.</h2>
+                  <p className="text-[#aaa] text-xs sm:text-sm max-w-[48ch]">See exactly what happens to your query. Start to finish.</p>
+                </div>
+
+                <div className="flex-1 min-h-0 overflow-hidden">
+                  <HowItWorks />
+                </div>
+              </div>
+            </section>
+
+            {/* BENEFITS + CTA - full screen (mobile) */}
+            <section className="h-full w-full snap-start flex flex-col items-center justify-start px-6 lg:px-12 relative pt-6 sm:pt-8">
+              <div className="w-full max-w-5xl">
+                <div className="max-w-md mb-3 sm:mb-4 pt-1">
+                  <h2 className="text-[22px] sm:text-2xl md:text-[34px] font-black tracking-tighter leading-tight mb-1">Built for privacy.</h2>
+                  <p className="text-[#888] text-xs sm:text-sm">Key features for privacy and scale.</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-6">
+                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Shield className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
+                    <Shield className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
+                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Post-quantum secure.</h3>
+                    <p className="text-[10px] sm:text-xs text-[#999]">Lattice cryptography that protects against current and future quantum threats.</p>
+                  </div>
+                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Fingerprint className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
+                    <Fingerprint className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
+                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Private information retrieval.</h3>
+                    <p className="text-[10px] sm:text-xs text-[#999]">The database never sees your queries or results. Everything stays encrypted.</p>
+                  </div>
+                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Code className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
+                    <Code className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
+                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">SQL.</h3>
+                    <p className="text-[10px] sm:text-xs text-[#999]">Write normal SQL queries as usual.</p>
+                  </div>
+                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <Network className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
+                    <Network className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
+                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Real scale.</h3>
+                    <p className="text-[10px] sm:text-xs text-[#999]">Horizontally scalable across a cluster with linear performance.</p>
+                  </div>
+                  <div className="p-3 sm:p-4 bg-[#0A0A0B] border border-[#222] rounded">
+                    <EyeOff className="text-[#CCFF00] mb-2 sm:mb-3 sm:hidden" size={16} />
+                    <EyeOff className="text-[#CCFF00] mb-2 sm:mb-3 hidden sm:block" size={18} />
+                    <h3 className="font-semibold mb-1 text-sm sm:text-[15px]">Plausible deniability.</h3>
+                    <p className="text-[10px] sm:text-xs text-[#999]">We cannot tell which part of the database was accessed.</p>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+          </>
+        )}
       </main>
     </div>
-  );
-}
-
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      className="p-6 bg-[#0A0A0B] border border-[#333] hover:border-[#CCFF00] transition-colors flex flex-col sm:flex-row md:flex-col lg:flex-row gap-4 items-start h-full"
-    >
-      <div className="w-12 h-12 shrink-0 bg-[#111] border border-[#333] flex items-center justify-center">
-        {icon}
-      </div>
-      <div className="flex flex-col text-left">
-        <h3 className="text-lg font-black uppercase text-white mb-2">{title}</h3>
-        <p className="text-sm font-mono text-[#AAA] leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
   );
 }
